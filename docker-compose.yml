@@ -1,0 +1,46 @@
+version: '3.3'
+services:
+    frontend:
+        build: frontend #local folder
+        ports:
+            - 3000:3000
+        stdin_open: true
+        volumes:
+            - ./frontend:/SWE-599/frontend
+            - /SWE-599/frontend/node_modules
+        container_name: frontend
+        restart: always
+        environment:
+            CHOKIDAR_USEPOLLING: "true"
+        networks:
+            - fe
+    # solr:
+    #     image: 'solr:8.5.1'
+    #     ports:
+    #         - '8983:8983'
+    #     # volumes:
+    #     # - data:/opt/solr/server/solr/mycores
+    #     entrypoint:
+    #         - docker-entrypoint.sh
+    #         - solr-precreate
+    #         - mycore
+    #     networks:
+    #         - be
+    # nutch:
+    #     image: 'apache/nutch:release-1.18'
+    #     links:
+    #         - solr
+    #     environment:
+    #         - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+    #     working_dir: /root/nutch
+    #     command: '/root/nutch/bin/crawl -i -D solr.server.url=http://solr:8983/solr/mycore -s urls crawl 10'
+    #     volumes:
+    #         - ./nutch-conf/index-writers.xml:/root/nutch/conf/index-writers.xml
+    #         - ./nutch-conf/nutch-site.xml:/root/nutch/conf/nutch-site.xml
+    #         - ./nutch-conf/regex-urlfilter.txt:/root/nutch/conf/regex-urlfilter.txt
+    #         - ./nutch-conf/seed.txt:/root/nutch/urls/seed.txt
+    #     networks:
+    #         - be
+networks:
+    fe: {}
+    # be: {}

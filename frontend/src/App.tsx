@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
-import { Button } from 'antd';
+import { Button } from "antd";
 import "./App.css";
 
 function App() {
@@ -8,11 +8,8 @@ function App() {
         <div className="app">
             <header className="app-header">
                 <img src={logo} className="app-logo" alt="logo" />
-                <p>
-                    Editand save to reload.
-                </p>
+                <p>Edit 2and save to reload.as</p>
                 <Button type="primary">Primary Button</Button>
-
             </header>
         </div>
     );
