@@ -16,12 +16,13 @@ services:
             - fe
     solr:
         container_name: solr
-        image: 'solr:8.5.1'
+        image: 'solr:8.5.2'
         ports:
             - '8983:8983'
         volumes:
-            - ./data:/SWE-599/solr/server/solr/nutch
-            - ./nutch/nutch-conf/schema.xml:/opt/solr/server/solr/configsets/_default/conf/schema.xml
+            # - ./data:/SWE-599/solr/server/solr/nutch
+            - ./nutch-conf/schema.xml:/opt/solr/server/solr/configsets/_default/conf/schema.xml
+            - ./nutch-conf/managed-schema:/opt/solr/server/solr/configsets/_default/conf/managed-schema
         entrypoint:
             - docker-entrypoint.sh
             - solr-precreate
@@ -29,29 +30,32 @@ services:
         environment:
             JVM_OPTS: >
                 -XX:-UseLargePages
-
         networks:
             - be
     nutch:
         container_name: nutch
-        image: 'apache/nutch:release-1.15'
+        image: 'apache/nutch:latest'
         links:
             - solr
         environment:
-            - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+            - JAVA_HOME=/usr/lib/jvm/java-11-openjdk
         working_dir: /root/nutch
-        command: '/root/nutch/bin/crawl -i -D solr.server.url=http://localhost:8983/solr/nutch -s urls crawl 1'
+        # command: '/root/nutch/bin/crawl -i -D solr.server.url=http://solr:8983/solr/nutch -s urls crawl 1'
+        # command: '/root/nutch/bin/nutch inject crawl/crawldb urls'
+        command: '/root/nutch/bin/nutch startserver -port 8081 -host localhost'
         volumes:
-            - ./nutch/nutch-conf/index-writers.xml:/root/nutch/conf/index-writers.xml
-            - ./nutch/nutch-conf/nutch-site.xml:/root/nutch/conf/nutch-site.xml
-            - ./nutch/nutch-conf/regex-urlfilter.txt:/root/nutch/conf/regex-urlfilter.txt
-            - ./nutch/nutch-conf/seed.txt:/root/nutch/urls/seed.txt
+            - ./nutch-conf/index-writers.xml:/root/nutch/conf/index-writers.xml
+            - ./nutch-conf/nutch-site.xml:/root/nutch/conf/nutch-site.xml
+            - ./nutch-conf/regex-urlfilter.txt:/root/nutch/conf/regex-urlfilter.txt
+            - ./nutch-conf/seed.txt:/root/nutch/urls/seed.txt
+        ports:
+            - "8080:8080"
+            - "8081:8081"
         networks:
             - be
 networks:
     fe: {}
     be: {}
-
 
 # The crawl database, or crawldb. This contains information about every URL known to Nutch, including whether it was fetched, and, if so, when.
 # The link database, or linkdb. This contains the list of known links to each URL, including both the source URL and anchor text of the link.

@@ -1,5 +1,7 @@
 # SWE-599-Nutch-Crawler
-# https://twg.io/blog/things-i-wish-i-knew-about-docker-before-i-started-using-it/
+# NOTES
+
+https://twg.io/blog/things-i-wish-i-knew-about-docker-before-i-started-using-it/
 
 docker-compose build 
 docker-compose build — no-cache
@@ -34,3 +36,25 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 $NUTCH_HOME/bin/nutch inject crawl/crawldb urls
 
+
+# Nutch data is composed of:
+
+- The crawl database, or crawldb. This contains information about every URL known to Nutch, including whether it was fetched, and, if so, when.
+- The link database, or linkdb. This contains the list of known links to each URL, including both the source URL and anchor text of the link.
+- A set of segments. Each segment is a set of URLs that are fetched as a unit. Segments are directories with the following subdirectories:
+    - a crawl_generate names a set of URLs to be fetched
+    - a crawl_fetch contains the status of fetching each URL
+    - a content contains the raw content retrieved from each URL
+    - a parse_text contains the parsed text of each URL
+    - a parse_data contains outlinks and metadata parsed from each URL
+    - a crawl_parse contains the outlink URLs, used to update the crawldb
+
+
+//////////////
+COMMANDS 
+https://cwiki.apache.org/confluence/display/nutch/CommandLineOptions
+
+https://www.slideshare.net/abial/nutch-as-a-web-data-mining-platform
+
+TODO:
+https://stackoverflow.com/a/54251381
