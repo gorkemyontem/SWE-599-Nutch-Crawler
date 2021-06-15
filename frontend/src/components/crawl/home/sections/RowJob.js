@@ -10,6 +10,7 @@ const RowJob = (props) => {
             <td>{props.type}</td>
             <td>{props.result ? props.result.result || props.result : ""}</td>
             <td>{props.state}</td>
+            {/** IDLE, RUNNING, FINISHED, FAILED, KILLED, STOPPING, KILLING, ANY */}
             <td>{props.seedName}</td>
             <td>{props.msg}</td>
         </tr>

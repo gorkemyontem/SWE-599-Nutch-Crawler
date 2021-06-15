@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TextInput from "../common/TextInput";
-import SelectInput from "../common/SelectInput";
+import TextInput from "../../common/TextInput";
+import SelectInput from "../../common/SelectInput";
 
 const JobForm = ({
     data,
@@ -32,7 +32,18 @@ const JobForm = ({
                 label="Type"
                 value={data.type}
                 defaultOption="Select Type"
-                options={["INJECT", "GENERATE", "FETCH", "PARSE"].map((el) => ({
+                options={[
+                    "INJECT",
+                    "GENERATE",
+                    "FETCH",
+                    "PARSE",
+                    "UPDATEDB",
+                    "INDEX",
+                    "READDB",
+                    "INVERTLINKS",
+                    "DEDUP",
+                    "CLASS",
+                ].map((el) => ({
                     value: el,
                     text: el,
                 }))}

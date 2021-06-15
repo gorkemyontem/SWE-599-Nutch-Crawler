@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { createJob } from "../../redux/actions/jobActions";
-import { loadConfig } from "../../redux/actions/crawlActions";
-import { loadSeeds } from "../../redux/actions/seedActions";
+import { createJob } from "../../../redux/actions/jobActions";
+import { loadConfig } from "../../../redux/actions/crawlActions";
+import { loadSeeds } from "../../../redux/actions/seedActions";
 
 import PropTypes from "prop-types";
 import JobForm from "./JobForm";
 import { toast } from "react-toastify";
+import { SideBar } from "../SideBar";
 
-export function CreateJobPage({
+export function ParseJobPage({
     config,
     loadConfig,
     createJob,
@@ -23,12 +24,13 @@ export function CreateJobPage({
                 alert("Loading server failed" + error);
             });
         }
-        if (!seeds || Object.keys(seeds).length === 0) {
-            loadSeeds().catch((error) => {
-                alert("Loading seeds failed" + error);
-            });
-        }
-    }, [config.length, loadConfig, seeds, loadSeeds]);
+    }, [config.length, loadConfig]);
+
+    useEffect(() => {
+        loadSeeds().catch((error) => {
+            alert("Loading seeds failed" + error);
+        });
+    }, []);
 
     const [job, setJob] = useState({
         crawlId: "",
@@ -78,19 +80,24 @@ export function CreateJobPage({
     }
 
     return (
-        <JobForm
-            config={config}
-            seeds={seeds}
-            data={job}
-            errors={errors}
-            onChange={handleChange}
-            onSave={handleSave}
-            saving={saving}
-        />
+        <div className="row">
+            <SideBar />
+            <div className="col-9">
+                <JobForm
+                    config={config}
+                    seeds={seeds}
+                    data={job}
+                    errors={errors}
+                    onChange={handleChange}
+                    onSave={handleSave}
+                    saving={saving}
+                />
+            </div>
+        </div>
     );
 }
 
-CreateJobPage.propTypes = {};
+ParseJobPage.propTypes = {};
 
 function mapStateToProps(state, ownProps) {
     return {
@@ -105,4 +112,4 @@ const mapDispatchToProps = {
     loadSeeds,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateJobPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ParseJobPage);

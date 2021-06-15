@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { createSeed } from "../../redux/actions/seedActions";
+import { createSeed } from "../../../redux/actions/seedActions";
 import PropTypes from "prop-types";
 import SeedForm from "./SeedForm";
 import { toast } from "react-toastify";
+import { SideBar } from "../SideBar";
 
 export function CreateSeedPage({ createSeed, history, ...props }) {
     const [seed, setSeed] = useState({
@@ -59,13 +60,18 @@ export function CreateSeedPage({ createSeed, history, ...props }) {
     }
 
     return (
-        <SeedForm
-            data={seed}
-            errors={errors}
-            onChange={handleChange}
-            onSave={handleSave}
-            saving={saving}
-        />
+        <div className="row">
+            <SideBar />
+            <div className="col-9">
+                <SeedForm
+                    data={seed}
+                    errors={errors}
+                    onChange={handleChange}
+                    onSave={handleSave}
+                    saving={saving}
+                />
+            </div>
+        </div>
     );
 }
 
