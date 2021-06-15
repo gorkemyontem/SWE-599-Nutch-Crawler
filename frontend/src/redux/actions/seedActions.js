@@ -2,15 +2,16 @@ import * as types from "./actionTypes";
 import * as crawApi from "../../api/crawlApi";
 import { beginApiCall, apiCallError } from "./apiStatusActions";
 
-export function loadJobs() {
+export function loadSeeds() {
+    //eslint-disable-next-line no-unused-vars
     return function (dispatch) {
         dispatch(beginApiCall());
         return crawApi
-            .getJobs()
-            .then((jobs) => {
+            .getSeeds()
+            .then((seeds) => {
                 dispatch({
-                    type: types.LOAD_JOBS_SUCCESS,
-                    jobs,
+                    type: types.LOAD_SEED_SUCCESS,
+                    seeds,
                 });
             })
             .catch((error) => {
@@ -20,35 +21,21 @@ export function loadJobs() {
     };
 }
 
-export function createJob(job) {
+export function createSeed(seed) {
     //eslint-disable-next-line no-unused-vars
     return function (dispatch) {
         dispatch(beginApiCall());
         return crawApi
-            .postCreateJob(job)
-            .then((createdJob) => {
+            .postCreateSeed(seed)
+            .then((seedId) => {
+                seed["seedFilePath"] = seedId;
+                seed["seedUrls"] = seed["seedUrls"].map((item) => ({
+                    id: null,
+                    url: item,
+                }));
                 dispatch({
-                    type: types.CREATE_JOB_SUCCESS,
-                    createdJob,
-                });
-            })
-            .catch((error) => {
-                dispatch(apiCallError(error));
-                throw error;
-            });
-    };
-}
-
-export function deleteJob(jobId) {
-    //eslint-disable-next-line no-unused-vars
-    return function (dispatch) {
-        dispatch(beginApiCall());
-        return crawApi
-            .deleteJob(jobId)
-            .then(() => {
-                dispatch({
-                    type: types.STOP_JOB_SUCCESS,
-                    jobId: jobId,
+                    type: types.CREATE_SEED_SUCCESS,
+                    seed,
                 });
             })
             .catch((error) => {

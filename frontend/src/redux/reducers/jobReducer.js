@@ -7,6 +7,8 @@ export default function jobReducer(state = initialState.jobs, action) {
             return action.jobs;
         case types.CREATE_JOB_SUCCESS:
             return [...state, { ...action.job }];
+        case types.STOP_JOB_SUCCESS:
+            return state.filter((job) => job.id !== action.jobId);
         default:
             return state;
     }

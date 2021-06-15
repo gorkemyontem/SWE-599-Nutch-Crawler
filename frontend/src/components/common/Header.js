@@ -44,6 +44,26 @@ const Header = () => {
                     <li className="nav-item">
                         <NavLink
                             className="nav-link"
+                            to="/create-seed"
+                            activeStyle={activeStyle}
+                        >
+                            Create Seed
+                        </NavLink>
+                    </li>
+
+                    <li className="nav-item">
+                        <NavLink
+                            className="nav-link"
+                            to="/create-job"
+                            activeStyle={activeStyle}
+                        >
+                            Create Job
+                        </NavLink>
+                    </li>
+
+                    <li className="nav-item">
+                        <NavLink
+                            className="nav-link"
                             to="/courses"
                             activeStyle={activeStyle}
                         >

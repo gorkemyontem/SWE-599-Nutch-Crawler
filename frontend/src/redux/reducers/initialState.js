@@ -5,4 +5,5 @@ export default {
     serverStatus: null,
     jobs: [],
     config: [],
+    seeds: {},
 };

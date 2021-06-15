@@ -2,19 +2,24 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { loadConfig, loadServerStatus } from "../../redux/actions/crawlActions";
 import { loadJobs } from "../../redux/actions/jobActions";
-import JobSection from "./JobSection";
-import RunningJobs from "./RunningJobs";
-import ManageJobCreation from "./ManageJobCreation";
-import Title from "./Title";
-// import { toast } from 'react-toastify';
+import { loadSeeds } from "../../redux/actions/seedActions";
+
+import JobSection from "./sections/JobSection";
+import RunningJobs from "./sections/RunningJobs";
+import Title from "./sections/Title";
+import Seeds from "./sections/Seeds";
+import { toast } from "react-toastify";
 
 export function CrawlPage({
     serverStatus,
     jobs,
+    seeds,
     config,
     loadServerStatus,
     loadJobs,
+    loadSeeds,
     loadConfig,
+    deleteJob,
     ...props
 }) {
     useEffect(() => {
@@ -25,12 +30,17 @@ export function CrawlPage({
         }
         if (jobs.length === 0) {
             loadJobs().catch((error) => {
-                alert("Loading server failed" + error);
+                alert("Loading jobs failed" + error);
             });
         }
         if (config.length === 0) {
             loadConfig().catch((error) => {
-                alert("Loading server failed" + error);
+                alert("Loading config failed" + error);
+            });
+        }
+        if (!seeds || Object.keys(seeds).length === 0) {
+            loadSeeds().catch((error) => {
+                alert("Loading seeds failed" + error);
             });
         }
     }, [
@@ -40,31 +50,40 @@ export function CrawlPage({
         loadJobs,
         config.length,
         loadConfig,
+        seeds,
+        loadSeeds,
     ]);
-
     return (
         <>
-            <div className="row align-items-space-between">
-                <div className="col">
-                    {serverStatus && <Title data={serverStatus.startDate} />}
+            {serverStatus && (
+                <div className="row align-items-space-between">
+                    <div className="col">
+                        <Title data={serverStatus.startDate} />
+                    </div>
                 </div>
-            </div>
+            )}
             <br />
-            <div className="row align-items-start">
-                <div className="col-4">
-                    <button type="button" className="btn btn-primary btn-block">
-                        Create a Job
-                    </button>
-                    <br />
-                    {serverStatus && (
+            {serverStatus && (
+                <div className="row align-items-start">
+                    <div className="col-12">
                         <RunningJobs data={serverStatus.runningJobs} />
-                    )}
-                    {serverStatus && <JobSection data={serverStatus.jobs} />}
+                    </div>
                 </div>
-                <div className="col">
-                    <ManageJobCreation jobs={jobs} config={config} />
+            )}
+            {serverStatus && (
+                <div className="row align-items-start">
+                    <div className="col-12">
+                        <JobSection data={serverStatus.jobs} />
+                    </div>
                 </div>
-            </div>
+            )}
+            {serverStatus && (
+                <div className="row align-items-start">
+                    <div className="col-12">
+                        <Seeds seeds={seeds} />
+                    </div>
+                </div>
+            )}
         </>
     );
 }
@@ -75,6 +94,7 @@ function mapStateToProps(state, ownProps) {
     return {
         serverStatus: state.serverStatus,
         jobs: state.jobs,
+        seeds: state.seeds,
         config: state.config,
     };
 }
@@ -83,6 +103,7 @@ const mapDispatchToProps = {
     loadServerStatus,
     loadJobs,
     loadConfig,
+    loadSeeds,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrawlPage);

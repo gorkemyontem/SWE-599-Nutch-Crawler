@@ -43,7 +43,7 @@ const JobForm = ({
             <SelectInput
                 name="confId"
                 label="Config"
-                value={data.type}
+                value={data.confId}
                 defaultOption="Select Config"
                 options={props.config.map((config) => ({
                     value: config,
@@ -52,16 +52,22 @@ const JobForm = ({
                 onChange={onChange}
                 error={errors.confId}
             />
-            <TextInput
-                name="args"
-                label="Arguments"
-                value={data.args}
+
+            <SelectInput
+                name="seedName"
+                label="Seed Name"
+                value={data.seedName}
+                defaultOption="Select Seed"
+                options={Object.keys(props.seeds).map((seed) => ({
+                    value: seed,
+                    text: seed,
+                }))}
                 onChange={onChange}
-                error={errors.args}
+                error={errors.seedName}
             />
 
             <button type="submit" disabled={saving} className="btn btn-primary">
-                {saving ? "Saving..." : "Save"}
+                {saving ? "Creating..." : "Create"}
             </button>
         </form>
     );
