@@ -10,17 +10,18 @@ services:
             - ./frontend:/SWE-599/frontend
             - /SWE-599/frontend/node_modules
         restart: always
+        links:
+            - nutch
         environment:
             CHOKIDAR_USEPOLLING: 'true'
         networks:
-            - fe
+            - local
     solr:
         container_name: solr
         image: 'solr:8.5.2'
         ports:
             - '8983:8983'
         volumes:
-            # - ./data:/SWE-599/solr/server/solr/nutch
             - ./nutch-conf/schema.xml:/opt/solr/server/solr/configsets/_default/conf/schema.xml
             - ./nutch-conf/managed-schema:/opt/solr/server/solr/configsets/_default/conf/managed-schema
         entrypoint:
@@ -30,8 +31,10 @@ services:
         environment:
             JVM_OPTS: >
                 -XX:-UseLargePages
+
+
         networks:
-            - be
+            - local
     nutch:
         container_name: nutch
         image: 'apache/nutch:latest'
@@ -40,23 +43,27 @@ services:
         environment:
             - JAVA_HOME=/usr/lib/jvm/java-11-openjdk
         working_dir: /root/nutch
-        # command: '/root/nutch/bin/crawl -i -D solr.server.url=http://solr:8983/solr/nutch -s urls crawl 1'
-        # command: '/root/nutch/bin/nutch inject crawl/crawldb urls'
-        command: '/root/nutch/bin/nutch startserver -port 8081 -host localhost'
+        command: '/root/nutch/bin/nutch startserver -port 8081 -host 0.0.0.0'
         volumes:
             - ./nutch-conf/index-writers.xml:/root/nutch/conf/index-writers.xml
             - ./nutch-conf/nutch-site.xml:/root/nutch/conf/nutch-site.xml
             - ./nutch-conf/regex-urlfilter.txt:/root/nutch/conf/regex-urlfilter.txt
             - ./nutch-conf/seed.txt:/root/nutch/urls/seed.txt
         ports:
-            - "8080:8080"
-            - "8081:8081"
+            - '8080:8080'
+            - '8081:8081'
         networks:
-            - be
+            - local
+    cors:
+        container_name: cors
+        build: cors #local folder
+        ports:
+            - '4545:80'
+        networks:
+            - local
 networks:
-    fe: {}
-    be: {}
-
+    local:
+        driver: bridge
 # The crawl database, or crawldb. This contains information about every URL known to Nutch, including whether it was fetched, and, if so, when.
 # The link database, or linkdb. This contains the list of known links to each URL, including both the source URL and anchor text of the link.
 # A set of segments. Each segment is a set of URLs that are fetched as a unit. Segments are directories with the following subdirectories:
@@ -66,3 +73,8 @@ networks:
 #       a parse_text contains the parsed text of each URL
 #       a parse_data contains outlinks and metadata parsed from each URL
 #       a crawl_parse contains the outlink URLs, used to update the crawldb
+
+# solr:8983/solr/nutch/select
+
+# command: '/root/nutch/bin/crawl -i -D solr.server.url=http://solr:8983/solr/nutch -s urls crawl 1'
+# command: '/root/nutch/bin/nutch inject crawl/crawldb urls'
