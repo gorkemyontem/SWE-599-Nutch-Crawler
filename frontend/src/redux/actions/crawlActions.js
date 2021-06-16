@@ -8,6 +8,7 @@ export function loadServerStatus() {
         return crawApi
             .getServerStatus()
             .then((serverStatus) => {
+                console.log(serverStatus);
                 dispatch({
                     type: types.LOAD_SERVER_STATUS_SUCCESS,
                     serverStatus,

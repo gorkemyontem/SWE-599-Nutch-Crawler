@@ -18,7 +18,6 @@ const JobSection = (props) => {
                                 <th scope="col">Crawl Id</th>
                                 <th scope="col">Config Id</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Result</th>
                                 <th scope="col">State</th>
                                 <th scope="col">Seed Name</th>
                                 <th scope="col">Message</th>
@@ -32,9 +31,10 @@ const JobSection = (props) => {
                                     crawlId={el.crawlId}
                                     confId={el.confId}
                                     type={el.type}
-                                    result={el.result}
                                     state={el.state}
-                                    seedName={el.args.seedName}
+                                    seedName={
+                                        el.args.seedName ? el.args.seedName : ""
+                                    }
                                     msg={el.msg}
                                 />
                             ))}

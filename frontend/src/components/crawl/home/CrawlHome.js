@@ -28,7 +28,7 @@ export function CrawlHome({
     useEffect(() => {
         if (!serverStatus) {
             loadServerStatus().catch((error) => {
-                alert("Loading server failed" + error);
+                alert("Loading server failed " + error);
             });
         }
         if (jobs.length === 0) {
@@ -99,7 +99,6 @@ export function CrawlHome({
 CrawlHome.propTypes = {};
 
 function mapStateToProps(state, ownProps) {
-    console.log(state);
     return {
         serverStatus: state.serverStatus,
         jobs: state.jobs,

@@ -14,7 +14,7 @@ import FetchJobPage from "./components/crawl/fetch/FetchJobPage";
 import ParseJobPage from "./components/crawl/parse/ParseJobPage";
 import IndexJobPage from "./components/crawl/index/IndexJobPage";
 import UpdateDbJobPage from "./components/crawl/update-db/UpdateDbJobPage";
-import InvertLinkJobPage from "./components/crawl/invert-link/InvertLinkJobPage";
+import InvertLinksJobPage from "./components/crawl/invert-links/InvertLinksJobPage";
 import DedupeJobPage from "./components/crawl/dedupe/DedupeJobPage";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,8 +35,8 @@ function App() {
                 <Route path="/crawl/index" component={IndexJobPage} />
                 <Route path="/crawl/update-db" component={UpdateDbJobPage} />
                 <Route
-                    path="/crawl/invert-link"
-                    component={InvertLinkJobPage}
+                    path="/crawl/invert-links"
+                    component={InvertLinksJobPage}
                 />
                 <Route path="/crawl/dedupe" component={DedupeJobPage} />
 

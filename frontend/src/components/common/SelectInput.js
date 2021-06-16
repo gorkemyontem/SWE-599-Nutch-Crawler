@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 const SelectInput = ({
     name,
     label,
+    disabled,
     onChange,
     defaultOption,
     value,
@@ -16,12 +17,13 @@ const SelectInput = ({
             <div className="field">
                 {/* Note, value is set here rather than on the option - docs: https://facebook.github.io/react/docs/forms.html */}
                 <select
+                    disabled={disabled}
                     name={name}
                     value={value}
                     onChange={onChange}
                     className="form-control"
                 >
-                    <option value="">{defaultOption}</option>
+                    {defaultOption && <option value="">{defaultOption}</option>}
                     {options.map((option) => {
                         return (
                             <option key={option.value} value={option.value}>

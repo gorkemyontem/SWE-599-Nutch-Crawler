@@ -2,41 +2,40 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { createJob } from "../../../redux/actions/jobActions";
 import { loadConfig } from "../../../redux/actions/crawlActions";
-import { loadSeeds } from "../../../redux/actions/seedActions";
+import { loadJobs } from "../../../redux/actions/jobActions";
 
 import PropTypes from "prop-types";
 import JobForm from "./JobForm";
 import { toast } from "react-toastify";
 import { SideBar } from "../SideBar";
 
-export function InvertLinkJobPage({
+export function InvertLinksJobPage({
+    jobs,
+    loadJobs,
     config,
     loadConfig,
     createJob,
-    seeds,
-    loadSeeds,
     history,
     ...props
 }) {
     useEffect(() => {
         if (config.length === 0) {
             loadConfig().catch((error) => {
-                alert("Loading server failed" + error);
+                alert("Loading server failed " + error);
             });
         }
-    }, [config.length, loadConfig]);
-
-    useEffect(() => {
-        loadSeeds().catch((error) => {
-            alert("Loading seeds failed" + error);
-        });
-    }, []);
+        if (jobs.length === 0) {
+            loadJobs().catch((error) => {
+                alert("Loading jobs failed" + error);
+            });
+        }
+    }, [config.length, loadConfig, jobs.length, loadJobs]);
 
     const [job, setJob] = useState({
         crawlId: "",
-        type: "",
-        confId: "",
-        seedName: "",
+        type: "INVERTLINKS",
+        confId: "default",
+        args: {},
     });
     const [errors, setErrors] = useState({});
     const [saving, setSaving] = useState(false);
@@ -50,15 +49,13 @@ export function InvertLinkJobPage({
     }
 
     function formIsValid() {
-        const { crawlId, type, confId, seedName } = job;
+        const { crawlId, type, confId } = job;
         const errors = {};
         if (!crawlId) errors.crawlId = "Crawl ID is required.";
         if (!type) errors.type = "Type is required";
         if (!confId) errors.confId = "ConfigId is required";
-        if (!seedName) errors.seedName = "Seed Name is required";
 
         setErrors(errors);
-        // Form is valid if the errors object still has no properties
         return Object.keys(errors).length === 0;
     }
 
@@ -66,12 +63,10 @@ export function InvertLinkJobPage({
         event.preventDefault();
         if (!formIsValid()) return;
         setSaving(true);
-        const dataToSend = { ...job, args: { seedName: job.seedName } };
-        delete dataToSend.seedName;
-        createJob(dataToSend)
+        createJob(job)
             .then(() => {
                 toast.success("Job created.");
-                history.push("/crawl");
+                history.push("/crawl/dedupe");
             })
             .catch((error) => {
                 setSaving(false);
@@ -85,7 +80,7 @@ export function InvertLinkJobPage({
             <div className="col-9">
                 <JobForm
                     config={config}
-                    seeds={seeds}
+                    jobs={jobs}
                     data={job}
                     errors={errors}
                     onChange={handleChange}
@@ -97,19 +92,19 @@ export function InvertLinkJobPage({
     );
 }
 
-InvertLinkJobPage.propTypes = {};
+InvertLinksJobPage.propTypes = {};
 
 function mapStateToProps(state, ownProps) {
     return {
         config: state.config,
-        seeds: state.seeds,
+        jobs: state.jobs,
     };
 }
 
 const mapDispatchToProps = {
     createJob,
     loadConfig,
-    loadSeeds,
+    loadJobs,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvertLinkJobPage);
+export default connect(mapStateToProps, mapDispatchToProps)(InvertLinksJobPage);

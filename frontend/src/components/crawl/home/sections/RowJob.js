@@ -8,7 +8,6 @@ const RowJob = (props) => {
             <td>{props.crawlId}</td>
             <td>{props.confId}</td>
             <td>{props.type}</td>
-            <td>{props.result ? props.result.result || props.result : ""}</td>
             <td>{props.state}</td>
             {/** IDLE, RUNNING, FINISHED, FAILED, KILLED, STOPPING, KILLING, ANY */}
             <td>{props.seedName}</td>
@@ -22,7 +21,6 @@ RowJob.propTypes = {
     crawlId: PropTypes.string.isRequired,
     confId: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    result: PropTypes.any,
     state: PropTypes.string.isRequired,
     seedName: PropTypes.string,
     msg: PropTypes.string.isRequired,

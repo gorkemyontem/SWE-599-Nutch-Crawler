@@ -51,7 +51,7 @@ export function CreateSeedPage({ createSeed, history, ...props }) {
         createSeed(dataToSend)
             .then(() => {
                 toast.success("Seed created.");
-                history.push("/crawl");
+                history.push("/crawl/inject");
             })
             .catch((error) => {
                 setSaving(false);

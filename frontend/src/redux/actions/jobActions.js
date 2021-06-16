@@ -29,7 +29,7 @@ export function createJob(job) {
             .then((createdJob) => {
                 dispatch({
                     type: types.CREATE_JOB_SUCCESS,
-                    createdJob,
+                    job: createdJob,
                 });
             })
             .catch((error) => {

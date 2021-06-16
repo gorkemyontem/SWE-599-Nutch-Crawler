@@ -66,10 +66,10 @@ export function SideBar() {
                     </NavLink>
                     <NavLink
                         className="nav-link"
-                        to={`/crawl/invert-link`}
+                        to={`/crawl/invert-links`}
                         activeStyle={activeStyle}
                     >
-                        INVERT LINK
+                        INVERT LINKS
                     </NavLink>
                     <NavLink
                         className="nav-link"

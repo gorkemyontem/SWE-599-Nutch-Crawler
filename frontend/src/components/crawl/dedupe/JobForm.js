@@ -11,6 +11,7 @@ const JobForm = ({
     errors = {},
     ...props
 }) => {
+    const uniqueCrawlId = [...new Set(props.jobs.map((job) => job.crawlId))];
     return (
         <form onSubmit={onSave}>
             {errors.onSave && (
@@ -19,31 +20,12 @@ const JobForm = ({
                 </div>
             )}
 
-            <TextInput
-                name="crawlId"
-                label="Crawl Id"
-                value={data.crawlId}
-                onChange={onChange}
-                error={errors.crawlId}
-            />
-
             <SelectInput
                 name="type"
                 label="Type"
                 value={data.type}
-                defaultOption="Select Type"
-                options={[
-                    "INJECT",
-                    "GENERATE",
-                    "FETCH",
-                    "PARSE",
-                    "UPDATEDB",
-                    "INDEX",
-                    "READDB",
-                    "INVERTLINKS",
-                    "DEDUP",
-                    "CLASS",
-                ].map((el) => ({
+                disabled={true}
+                options={["DEDUP"].map((el) => ({
                     value: el,
                     text: el,
                 }))}
@@ -52,29 +34,28 @@ const JobForm = ({
             />
 
             <SelectInput
+                name="crawlId"
+                label="Crawl Id"
+                value={data.crawlId}
+                defaultOption="Select Crawl Id"
+                options={uniqueCrawlId.map((id) => ({
+                    value: id,
+                    text: id,
+                }))}
+                onChange={onChange}
+                error={errors.crawlId}
+            />
+
+            <SelectInput
                 name="confId"
                 label="Config"
                 value={data.confId}
-                defaultOption="Select Config"
                 options={props.config.map((config) => ({
                     value: config,
                     text: config,
                 }))}
                 onChange={onChange}
                 error={errors.confId}
-            />
-
-            <SelectInput
-                name="seedName"
-                label="Seed Name"
-                value={data.seedName}
-                defaultOption="Select Seed"
-                options={Object.keys(props.seeds).map((seed) => ({
-                    value: seed,
-                    text: seed,
-                }))}
-                onChange={onChange}
-                error={errors.seedName}
             />
 
             <button type="submit" disabled={saving} className="btn btn-primary">

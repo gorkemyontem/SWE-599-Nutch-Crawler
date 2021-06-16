@@ -19,31 +19,12 @@ const JobForm = ({
                 </div>
             )}
 
-            <TextInput
-                name="crawlId"
-                label="Crawl Id"
-                value={data.crawlId}
-                onChange={onChange}
-                error={errors.crawlId}
-            />
-
             <SelectInput
                 name="type"
                 label="Type"
                 value={data.type}
-                defaultOption="Select Type"
-                options={[
-                    "INJECT",
-                    "GENERATE",
-                    "FETCH",
-                    "PARSE",
-                    "UPDATEDB",
-                    "INDEX",
-                    "READDB",
-                    "INVERTLINKS",
-                    "DEDUP",
-                    "CLASS",
-                ].map((el) => ({
+                disabled={true}
+                options={["INJECT"].map((el) => ({
                     value: el,
                     text: el,
                 }))}
@@ -51,17 +32,12 @@ const JobForm = ({
                 error={errors.type}
             />
 
-            <SelectInput
-                name="confId"
-                label="Config"
-                value={data.confId}
-                defaultOption="Select Config"
-                options={props.config.map((config) => ({
-                    value: config,
-                    text: config,
-                }))}
+            <TextInput
+                name="crawlId"
+                label="Crawl Id"
+                value={data.crawlId}
                 onChange={onChange}
-                error={errors.confId}
+                error={errors.crawlId}
             />
 
             <SelectInput
@@ -75,6 +51,19 @@ const JobForm = ({
                 }))}
                 onChange={onChange}
                 error={errors.seedName}
+            />
+
+            <SelectInput
+                name="confId"
+                label="Config"
+                value={data.confId}
+                // defaultOption="Select Config"
+                options={props.config.map((config) => ({
+                    value: config,
+                    text: config,
+                }))}
+                onChange={onChange}
+                error={errors.confId}
             />
 
             <button type="submit" disabled={saving} className="btn btn-primary">

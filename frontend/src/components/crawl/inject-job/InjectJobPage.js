@@ -21,7 +21,7 @@ export function InjectJobPage({
     useEffect(() => {
         if (config.length === 0) {
             loadConfig().catch((error) => {
-                alert("Loading server failed" + error);
+                alert("Loading server failed " + error);
             });
         }
     }, [config.length, loadConfig]);
@@ -34,8 +34,8 @@ export function InjectJobPage({
 
     const [job, setJob] = useState({
         crawlId: "",
-        type: "",
-        confId: "",
+        type: "INJECT",
+        confId: "default",
         seedName: "",
     });
     const [errors, setErrors] = useState({});
@@ -71,7 +71,7 @@ export function InjectJobPage({
         createJob(dataToSend)
             .then(() => {
                 toast.success("Job created.");
-                history.push("/crawl");
+                history.push("/crawl/generate");
             })
             .catch((error) => {
                 setSaving(false);
