@@ -16,6 +16,7 @@ import IndexJobPage from "./components/crawl/index/IndexJobPage";
 import UpdateDbJobPage from "./components/crawl/update-db/UpdateDbJobPage";
 import InvertLinksJobPage from "./components/crawl/invert-links/InvertLinksJobPage";
 import DedupeJobPage from "./components/crawl/dedupe/DedupeJobPage";
+import SolrPage from "./components/solr/SolrPage";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
                     component={InvertLinksJobPage}
                 />
                 <Route path="/crawl/dedupe" component={DedupeJobPage} />
+
+                <Route path="/solr" component={SolrPage} />
 
                 <Route component={PageNotFound} />
             </Switch>

@@ -13,14 +13,12 @@ const Header = () => {
                 aria-controls="navbarTogglerDemo03"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
-            >
-                <span className="navbar-toggler-icon"></span>
-            </button>
+            ></button>
             <NavLink className="navbar-brand" to="/">
                 SWE-599
             </NavLink>
 
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div>
                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li className="nav-item">
                         <NavLink
@@ -41,23 +39,23 @@ const Header = () => {
                             Crawl
                         </NavLink>
                     </li>
-
                     <li className="nav-item">
                         <NavLink
                             className="nav-link"
-                            to="/courses"
+                            to="/solr"
                             activeStyle={activeStyle}
                         >
-                            Courses
+                            Solr Query
                         </NavLink>
                     </li>
+
                     <li className="nav-item">
                         <NavLink
                             className="nav-link"
                             to="/about"
                             activeStyle={activeStyle}
                         >
-                            About
+                            Doc
                         </NavLink>
                     </li>
                 </ul>

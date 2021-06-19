@@ -10,7 +10,7 @@
     </property>
     <property>
        <name>http.agent.email</name>                         
-       <value>datalake.ng at gmail d</value>                            
+       <value>gorkem@example.com</value>                            
     </property>
     <property>
         <name>plugin.includes</name>
