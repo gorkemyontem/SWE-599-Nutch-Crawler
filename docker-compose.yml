@@ -10,8 +10,10 @@ services:
             - ./frontend:/SWE-599/frontend
             - /SWE-599/frontend/node_modules
         restart: always
-        links:
+        depends_on:
             - nutch
+        # environment:
+        #     CHOKIDAR_USEPOLLING: 'true'
         networks:
             - local
     solr:
@@ -36,7 +38,7 @@ services:
     nutch:
         container_name: nutch
         image: 'apache/nutch:latest'
-        links:
+        depends_on:
             - solr
         environment:
             - JAVA_HOME=/usr/lib/jvm/java-11-openjdk
@@ -57,7 +59,7 @@ services:
         build: cors #local folder
         ports:
             - '4545:80'
-        links:
+        depends_on:
             - nutch
         networks:
             - local
@@ -66,7 +68,7 @@ services:
         build: cors-solr #local folder
         ports:
             - '4646:88'
-        links:
+        depends_on:
             - solr
         networks:
             - local
