@@ -12,8 +12,6 @@ services:
         restart: always
         links:
             - nutch
-        environment:
-            CHOKIDAR_USEPOLLING: 'true'
         networks:
             - local
     solr:
@@ -59,6 +57,8 @@ services:
         build: cors #local folder
         ports:
             - '4545:80'
+        links:
+            - nutch
         networks:
             - local
     cors-solr:
@@ -66,6 +66,8 @@ services:
         build: cors-solr #local folder
         ports:
             - '4646:88'
+        links:
+            - solr
         networks:
             - local
 networks:
